@@ -132,13 +132,126 @@ div[data-testid="stFileUploader"]{background:#141f34!important;border-color:#506
 
 LIGHT_LOCK_CSS = """
 <style>
-/* 明确锁定浅色可读性，避免访客系统夜间模式把文字自动改白。 */
-[data-testid="stChatMessage"] p,[data-testid="stChatMessage"] li,[data-testid="stChatMessage"] span{color:#14213d!important}
-.stTextInput input,.stTextArea textarea,.stNumberInput input,[data-baseweb="select"]>div{background:#fff!important;color:#14213d!important}
-.stTextInput input::placeholder,.stTextArea textarea::placeholder{color:#77839a!important;opacity:1!important}
+/* 强制使用浅色控件，避免Streamlit夜间模式造成黑底黑字。 */
+html {
+    color-scheme: light !important;
+}
+
+.stApp {
+    color: #14213d !important;
+}
+
+/* AI对话和用户对话始终保持白底深色字。 */
+[data-testid="stChatMessage"] {
+    background: rgba(255,255,255,.92) !important;
+    border-color: rgba(114,133,174,.18) !important;
+}
+
+[data-testid="stChatMessage"] p,
+[data-testid="stChatMessage"] li,
+[data-testid="stChatMessage"] span {
+    color: #14213d !important;
+}
+
+/* 普通按钮：白色背景、深蓝色文字。 */
+div[data-testid="stButton"] button[kind="secondary"],
+div[data-testid="stDownloadButton"] button[kind="secondary"],
+button[data-testid="stBaseButton-secondary"],
+button[data-testid="stBaseButton-minimal"] {
+    background: #ffffff !important;
+    color: #14213d !important;
+    border: 1px solid #d8dfef !important;
+}
+
+div[data-testid="stButton"] button[kind="secondary"] p,
+div[data-testid="stDownloadButton"] button[kind="secondary"] p,
+button[data-testid="stBaseButton-secondary"] p,
+button[data-testid="stBaseButton-minimal"] p {
+    color: #14213d !important;
+}
+
+/* 主要操作按钮继续使用蓝紫渐变和白色文字。 */
+div[data-testid="stButton"] button[kind="primary"],
+button[data-testid="stBaseButton-primary"] {
+    background: linear-gradient(
+        100deg,
+        #315bea,
+        #7956e8
+    ) !important;
+    color: #ffffff !important;
+    border: 0 !important;
+}
+
+div[data-testid="stButton"] button[kind="primary"] p,
+button[data-testid="stBaseButton-primary"] p {
+    color: #ffffff !important;
+}
+
+/* 输入框始终使用白底深色字。 */
+.stTextInput input,
+.stTextArea textarea,
+.stNumberInput input,
+[data-baseweb="select"] > div,
+[data-baseweb="base-input"] {
+    background: #ffffff !important;
+    color: #14213d !important;
+    border-color: #d8dfef !important;
+}
+
+/* 输入框提示文字。 */
+.stTextInput input::placeholder,
+.stTextArea textarea::placeholder {
+    color: #77839a !important;
+    opacity: 1 !important;
+}
+
+/* 下拉菜单。 */
+[data-baseweb="popover"],
+[data-baseweb="menu"],
+[role="listbox"] {
+    background: #ffffff !important;
+    color: #14213d !important;
+}
+
+[role="option"] {
+    background: #ffffff !important;
+    color: #14213d !important;
+}
+
+/* 标签页保持浅色。 */
+.stTabs [data-baseweb="tab-list"] {
+    background: rgba(233,238,250,.90) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    color: #53617c !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: #ffffff !important;
+    color: #14213d !important;
+}
+
+/* 侧边栏仍保持深色设计。 */
+[data-testid="stSidebar"] {
+    color: #eef3ff !important;
+}
+
+[data-testid="stSidebar"] * {
+    color: #eef3ff;
+}
+
+[data-testid="stSidebar"] button {
+    background: rgba(255,255,255,.08) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,.16) !important;
+}
+
+[data-testid="stSidebar"] button p {
+    color: #ffffff !important;
+}
 </style>
 """
-
 
 def get_premium_css(mode: str = "浅色") -> str:
     return PREMIUM_CSS + EXTRA_CSS + (DARK_CSS if mode == "深色" else LIGHT_LOCK_CSS)
