@@ -518,9 +518,7 @@ def render_step_two() -> None:
                 f"同步完成：新增{report.added}份，更新{report.updated}份，"
                 f"未变化{report.unchanged}份，失败{report.failed}份。"
             )
-            st.rerun()
-    with sync_right:
-        
+            st.rerun()    
     if st.session_state.get("kb_sync_message"):
         st.success(st.session_state.pop("kb_sync_message"))
     upload_col, source_col = st.columns([.92, 1.35], gap="large")
