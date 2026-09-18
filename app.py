@@ -108,8 +108,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.session_state.display_theme = "浅色"
-st.markdown(get_premium_css("浅色"), unsafe_allow_html=True)
+st.markdown(get_premium_css("自动"), unsafe_allow_html=True)
 
 
 DEFAULT_REQUIREMENTS = {
@@ -270,7 +269,6 @@ def render_sidebar() -> None:
         st.divider()
         st.caption("COMPETITION EDITION · V4.0")
         st.caption(f"会话日期 · {datetime.now():%Y-%m-%d}")
-        st.caption("显示模式 · 浅色（已固定，避免设备主题造成文字不可见）")
         if st.button("查看使用说明", use_container_width=True):
             st.session_state.show_guide = True
         if st.button("重新开始本次备课", use_container_width=True):
@@ -448,7 +446,7 @@ def render_step_one() -> None:
                 audio_hash = hashlib.sha256(audio_bytes).hexdigest()
                 if available and st.button("将录音转换为文字", use_container_width=True):
                     try:
-                        with st.spinner("Paraformer正在本地识别语音，请稍候……"):
+                        with st.spinner("Paraformer正在识别语音，请稍候……"):
                             st.session_state.voice_transcript = transcribe_audio(
                                 audio_bytes,
                                 getattr(recorded_audio, "name", "teacher_recording.wav"),
