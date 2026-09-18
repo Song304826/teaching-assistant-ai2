@@ -520,7 +520,7 @@ def render_step_two() -> None:
             )
             st.rerun()
     with sync_right:
-        st.caption("队友把新资料放入 knowledge_base/documents 的学科文件夹后，点击同步即可；已有资料不会重复处理。")
+        
     if st.session_state.get("kb_sync_message"):
         st.success(st.session_state.pop("kb_sync_message"))
     upload_col, source_col = st.columns([.92, 1.35], gap="large")
