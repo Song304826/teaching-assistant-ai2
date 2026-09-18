@@ -1,4 +1,4 @@
-PREMIUM_CSS = """
+ PREMIUM_CSS = """
 <style>
 :root {
     --ink:#14213d; --muted:#68758f; --line:rgba(114,133,174,.18);
@@ -130,113 +130,146 @@ div[data-testid="stFileUploader"]{background:#141f34!important;border-color:#506
 """
 
 
-LIGHT_LOCK_CSS = """
+ADAPTIVE_CSS = """
 <style>
-/* 无论访客选择哪种Streamlit主题，业务页面都保持浅色和足够对比度。 */
+/* 跟随Streamlit的Light/Dark选择，同时保证前景与背景成对变化。 */
 :root{
-    color-scheme:light!important;
-    --text-color:#172033!important;
-    --background-color:#f5f7fb!important;
-    --secondary-background-color:#ffffff!important;
+    --app-text:var(--text-color);
+    --app-bg:var(--background-color);
+    --app-surface:var(--secondary-background-color);
+    --app-primary:var(--primary-color);
 }
-.stApp,[data-testid="stAppViewContainer"],[data-testid="stMain"]{
-    color:#172033!important;
-}
-[data-testid="stMain"] h1,[data-testid="stMain"] h2,[data-testid="stMain"] h3,
-[data-testid="stMain"] h4,[data-testid="stMain"] h5,[data-testid="stMain"] h6,
-[data-testid="stMain"] label,[data-testid="stMain"] .stCaption,
-[data-testid="stMain"] [data-testid="stMarkdownContainer"] p,
-[data-testid="stMain"] [data-testid="stMarkdownContainer"] li{
-    color:#172033!important;
+.stApp{
+    background:
+      radial-gradient(circle at 78% 6%,rgba(124,77,255,.10),transparent 28%),
+      radial-gradient(circle at 28% 22%,rgba(22,184,212,.08),transparent 24%),
+      var(--app-bg)!important;
+    color:var(--app-text)!important;
 }
 
-/* 展开面板 */
-[data-testid="stMain"] [data-testid="stExpander"],
-[data-testid="stMain"] [data-testid="stExpander"] details,
-[data-testid="stMain"] [data-testid="stExpander"] summary{
-    background:#ffffff!important;
-    color:#172033!important;
-    border-color:#dbe3f1!important;
+/* 标题、正文、标签统一使用当前主题的文字色。 */
+.page-title,.panel-title,.field-value,.stat-value,.guide-title,
+.download-title,.source-name,[data-testid="stWidgetLabel"] p,
+.stApp label,.stApp h1,.stApp h2,.stApp h3,.stApp h4,
+.stApp h5,.stApp h6{
+    color:var(--app-text)!important;
 }
-[data-testid="stMain"] [data-testid="stExpander"] summary *{
-    color:#172033!important;
+.page-subtitle,.field-label,.stat-label,.guide-copy,.download-meta,
+.source-meta,.stCaption{
+    color:var(--app-text)!important;
+    opacity:.72;
 }
 
-/* 普通按钮与下载按钮 */
-[data-testid="stMain"] div[data-testid="stButton"] button,
-[data-testid="stMain"] div[data-testid="stDownloadButton"] button,
-[data-testid="stMain"] button[data-testid="stBaseButton-secondary"],
-[data-testid="stMain"] button[data-testid="stBaseButton-minimal"]{
-    background:#ffffff!important;
-    color:#172033!important;
-    border:1px solid #d7dfef!important;
+/* 卡片和面板跟随主题表面色。 */
+.panel,.stat-card,.guide-card,.preference-box,
+[data-testid="stChatMessage"],[data-testid="stExpander"],
+[data-testid="stFileUploader"]{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
+    border-color:color-mix(in srgb,var(--app-text) 18%,transparent)!important;
 }
-[data-testid="stMain"] div[data-testid="stButton"] button *,
-[data-testid="stMain"] div[data-testid="stDownloadButton"] button *{
+[data-testid="stExpander"] details,
+[data-testid="stExpander"] summary{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
+}
+[data-testid="stExpander"] summary *,
+[data-testid="stChatMessage"] *{
+    color:var(--app-text)!important;
+}
+
+/* 普通按钮：背景和文字同时随主题改变。 */
+.stApp div[data-testid="stButton"] button,
+.stApp div[data-testid="stDownloadButton"] button,
+.stApp button[data-testid="stBaseButton-secondary"],
+.stApp button[data-testid="stBaseButton-minimal"]{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
+    border-color:color-mix(in srgb,var(--app-text) 24%,transparent)!important;
+}
+.stApp div[data-testid="stButton"] button *,
+.stApp div[data-testid="stDownloadButton"] button *{
     color:inherit!important;
 }
 
-/* 主要按钮 */
-[data-testid="stMain"] div[data-testid="stButton"] button[kind="primary"],
-[data-testid="stMain"] button[data-testid="stBaseButton-primary"]{
+/* 主要操作按钮始终保持蓝紫渐变与白字。 */
+.stApp button[kind="primary"],
+.stApp button[data-testid="stBaseButton-primary"]{
     background:linear-gradient(100deg,#315bea,#7956e8)!important;
     color:#ffffff!important;
     border:0!important;
 }
-[data-testid="stMain"] div[data-testid="stButton"] button[kind="primary"] *,
-[data-testid="stMain"] button[data-testid="stBaseButton-primary"] *{
+.stApp button[kind="primary"] *,
+.stApp button[data-testid="stBaseButton-primary"] *{
     color:#ffffff!important;
 }
 
-/* 输入框、数字框与下拉选择框 */
-[data-testid="stMain"] input,[data-testid="stMain"] textarea,
-[data-testid="stMain"] [data-baseweb="input"],
-[data-testid="stMain"] [data-baseweb="base-input"],
-[data-testid="stMain"] [data-baseweb="select"]>div{
-    background:#ffffff!important;
-    color:#172033!important;
-    border-color:#cfd9eb!important;
+/* 输入框、数字框与下拉框。 */
+.stApp input,.stApp textarea,
+.stApp [data-baseweb="input"],
+.stApp [data-baseweb="base-input"],
+.stApp [data-baseweb="select"]>div{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
+    border-color:color-mix(in srgb,var(--app-text) 24%,transparent)!important;
 }
-[data-testid="stMain"] input::placeholder,[data-testid="stMain"] textarea::placeholder{
-    color:#77839a!important;opacity:1!important;
+.stApp [data-baseweb="select"] *,
+.stApp [data-baseweb="input"] *{
+    color:var(--app-text)!important;
 }
-[data-testid="stMain"] [data-baseweb="select"] *,
-[data-testid="stMain"] [data-baseweb="input"] *{
-    color:#172033!important;
+.stApp input::placeholder,.stApp textarea::placeholder{
+    color:var(--app-text)!important;
+    opacity:.52!important;
 }
-
-/* 数字输入框的加减按钮 */
-[data-testid="stMain"] [data-testid="stNumberInput"] button{
-    background:#eef2fa!important;
-    color:#172033!important;
-    border-color:#cfd9eb!important;
-}
-[data-testid="stMain"] [data-testid="stNumberInput"] button *{
-    color:#172033!important;
+.stApp [data-testid="stNumberInput"] button{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
 }
 
-/* 对话、选项菜单和标签页 */
-[data-testid="stMain"] [data-testid="stChatMessage"]{
-    background:rgba(255,255,255,.94)!important;
-    border-color:#dbe3f1!important;
+/* 弹出菜单和标签页。 */
+[data-baseweb="popover"],[data-baseweb="menu"],
+[role="listbox"],[role="option"]{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
 }
-[data-testid="stMain"] [data-testid="stChatMessage"] *{color:#172033!important}
-[data-baseweb="popover"],[data-baseweb="menu"],[role="listbox"],
-[role="option"]{background:#ffffff!important;color:#172033!important}
-.stTabs [data-baseweb="tab-list"]{background:#e9eefa!important}
-.stTabs [data-baseweb="tab"]{color:#53617c!important}
-.stTabs [aria-selected="true"]{background:#ffffff!important;color:#172033!important}
+.stTabs [data-baseweb="tab-list"]{
+    background:color-mix(in srgb,var(--app-surface) 88%,var(--app-text) 12%)!important;
+}
+.stTabs [data-baseweb="tab"]{color:var(--app-text)!important}
+.stTabs [aria-selected="true"]{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
+}
 
-/* 左侧导航栏维持深色，不受上面的浅色锁定影响。 */
+/* 自定义资料卡片在两种主题下都可读。 */
+.source-item,.download-summary{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
+    border-color:color-mix(in srgb,var(--app-text) 18%,transparent)!important;
+}
+.mini-badge{
+    background:var(--app-surface)!important;
+    color:var(--app-text)!important;
+}
+.field-row{border-bottom-color:color-mix(in srgb,var(--app-text) 14%,transparent)!important}
+.requirement-progress{background:color-mix(in srgb,var(--app-text) 14%,transparent)!important}
+
+/* 品牌横幅、课件预览和侧栏始终保留设计色。 */
+.app-header,.app-header *,.slide-card,.slide-card *{color:#ffffff!important}
+.app-kicker{color:#98f1ee!important}
+[data-testid="stSidebar"]{
+    background:linear-gradient(175deg,#0c1630 0%,#152750 62%,#26327a 100%)!important;
+}
 [data-testid="stSidebar"],[data-testid="stSidebar"] *{color:#eef3ff!important}
 [data-testid="stSidebar"] button{
     background:rgba(255,255,255,.08)!important;
     color:#ffffff!important;
     border-color:rgba(255,255,255,.16)!important;
 }
+[data-testid="stSidebar"] button *{color:#ffffff!important}
 </style>
 """
 
 
-def get_premium_css(mode: str = "浅色") -> str:
-    return PREMIUM_CSS + EXTRA_CSS + (DARK_CSS if mode == "深色" else LIGHT_LOCK_CSS)
+def get_premium_css(mode: str = "自动") -> str:
+    return PREMIUM_CSS + EXTRA_CSS + ADAPTIVE_CSS
