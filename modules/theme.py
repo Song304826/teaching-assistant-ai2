@@ -132,126 +132,111 @@ div[data-testid="stFileUploader"]{background:#141f34!important;border-color:#506
 
 LIGHT_LOCK_CSS = """
 <style>
-/* 强制使用浅色控件，避免Streamlit夜间模式造成黑底黑字。 */
-html {
-    color-scheme: light !important;
+/* 无论访客选择哪种Streamlit主题，业务页面都保持浅色和足够对比度。 */
+:root{
+    color-scheme:light!important;
+    --text-color:#172033!important;
+    --background-color:#f5f7fb!important;
+    --secondary-background-color:#ffffff!important;
+}
+.stApp,[data-testid="stAppViewContainer"],[data-testid="stMain"]{
+    color:#172033!important;
+}
+[data-testid="stMain"] h1,[data-testid="stMain"] h2,[data-testid="stMain"] h3,
+[data-testid="stMain"] h4,[data-testid="stMain"] h5,[data-testid="stMain"] h6,
+[data-testid="stMain"] label,[data-testid="stMain"] .stCaption,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] p,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] li{
+    color:#172033!important;
 }
 
-.stApp {
-    color: #14213d !important;
+/* 展开面板 */
+[data-testid="stMain"] [data-testid="stExpander"],
+[data-testid="stMain"] [data-testid="stExpander"] details,
+[data-testid="stMain"] [data-testid="stExpander"] summary{
+    background:#ffffff!important;
+    color:#172033!important;
+    border-color:#dbe3f1!important;
+}
+[data-testid="stMain"] [data-testid="stExpander"] summary *{
+    color:#172033!important;
 }
 
-/* AI对话和用户对话始终保持白底深色字。 */
-[data-testid="stChatMessage"] {
-    background: rgba(255,255,255,.92) !important;
-    border-color: rgba(114,133,174,.18) !important;
+/* 普通按钮与下载按钮 */
+[data-testid="stMain"] div[data-testid="stButton"] button,
+[data-testid="stMain"] div[data-testid="stDownloadButton"] button,
+[data-testid="stMain"] button[data-testid="stBaseButton-secondary"],
+[data-testid="stMain"] button[data-testid="stBaseButton-minimal"]{
+    background:#ffffff!important;
+    color:#172033!important;
+    border:1px solid #d7dfef!important;
+}
+[data-testid="stMain"] div[data-testid="stButton"] button *,
+[data-testid="stMain"] div[data-testid="stDownloadButton"] button *{
+    color:inherit!important;
 }
 
-[data-testid="stChatMessage"] p,
-[data-testid="stChatMessage"] li,
-[data-testid="stChatMessage"] span {
-    color: #14213d !important;
+/* 主要按钮 */
+[data-testid="stMain"] div[data-testid="stButton"] button[kind="primary"],
+[data-testid="stMain"] button[data-testid="stBaseButton-primary"]{
+    background:linear-gradient(100deg,#315bea,#7956e8)!important;
+    color:#ffffff!important;
+    border:0!important;
+}
+[data-testid="stMain"] div[data-testid="stButton"] button[kind="primary"] *,
+[data-testid="stMain"] button[data-testid="stBaseButton-primary"] *{
+    color:#ffffff!important;
 }
 
-/* 普通按钮：白色背景、深蓝色文字。 */
-div[data-testid="stButton"] button[kind="secondary"],
-div[data-testid="stDownloadButton"] button[kind="secondary"],
-button[data-testid="stBaseButton-secondary"],
-button[data-testid="stBaseButton-minimal"] {
-    background: #ffffff !important;
-    color: #14213d !important;
-    border: 1px solid #d8dfef !important;
+/* 输入框、数字框与下拉选择框 */
+[data-testid="stMain"] input,[data-testid="stMain"] textarea,
+[data-testid="stMain"] [data-baseweb="input"],
+[data-testid="stMain"] [data-baseweb="base-input"],
+[data-testid="stMain"] [data-baseweb="select"]>div{
+    background:#ffffff!important;
+    color:#172033!important;
+    border-color:#cfd9eb!important;
+}
+[data-testid="stMain"] input::placeholder,[data-testid="stMain"] textarea::placeholder{
+    color:#77839a!important;opacity:1!important;
+}
+[data-testid="stMain"] [data-baseweb="select"] *,
+[data-testid="stMain"] [data-baseweb="input"] *{
+    color:#172033!important;
 }
 
-div[data-testid="stButton"] button[kind="secondary"] p,
-div[data-testid="stDownloadButton"] button[kind="secondary"] p,
-button[data-testid="stBaseButton-secondary"] p,
-button[data-testid="stBaseButton-minimal"] p {
-    color: #14213d !important;
+/* 数字输入框的加减按钮 */
+[data-testid="stMain"] [data-testid="stNumberInput"] button{
+    background:#eef2fa!important;
+    color:#172033!important;
+    border-color:#cfd9eb!important;
+}
+[data-testid="stMain"] [data-testid="stNumberInput"] button *{
+    color:#172033!important;
 }
 
-/* 主要操作按钮继续使用蓝紫渐变和白色文字。 */
-div[data-testid="stButton"] button[kind="primary"],
-button[data-testid="stBaseButton-primary"] {
-    background: linear-gradient(
-        100deg,
-        #315bea,
-        #7956e8
-    ) !important;
-    color: #ffffff !important;
-    border: 0 !important;
+/* 对话、选项菜单和标签页 */
+[data-testid="stMain"] [data-testid="stChatMessage"]{
+    background:rgba(255,255,255,.94)!important;
+    border-color:#dbe3f1!important;
 }
+[data-testid="stMain"] [data-testid="stChatMessage"] *{color:#172033!important}
+[data-baseweb="popover"],[data-baseweb="menu"],[role="listbox"],
+[role="option"]{background:#ffffff!important;color:#172033!important}
+.stTabs [data-baseweb="tab-list"]{background:#e9eefa!important}
+.stTabs [data-baseweb="tab"]{color:#53617c!important}
+.stTabs [aria-selected="true"]{background:#ffffff!important;color:#172033!important}
 
-div[data-testid="stButton"] button[kind="primary"] p,
-button[data-testid="stBaseButton-primary"] p {
-    color: #ffffff !important;
-}
-
-/* 输入框始终使用白底深色字。 */
-.stTextInput input,
-.stTextArea textarea,
-.stNumberInput input,
-[data-baseweb="select"] > div,
-[data-baseweb="base-input"] {
-    background: #ffffff !important;
-    color: #14213d !important;
-    border-color: #d8dfef !important;
-}
-
-/* 输入框提示文字。 */
-.stTextInput input::placeholder,
-.stTextArea textarea::placeholder {
-    color: #77839a !important;
-    opacity: 1 !important;
-}
-
-/* 下拉菜单。 */
-[data-baseweb="popover"],
-[data-baseweb="menu"],
-[role="listbox"] {
-    background: #ffffff !important;
-    color: #14213d !important;
-}
-
-[role="option"] {
-    background: #ffffff !important;
-    color: #14213d !important;
-}
-
-/* 标签页保持浅色。 */
-.stTabs [data-baseweb="tab-list"] {
-    background: rgba(233,238,250,.90) !important;
-}
-
-.stTabs [data-baseweb="tab"] {
-    color: #53617c !important;
-}
-
-.stTabs [aria-selected="true"] {
-    background: #ffffff !important;
-    color: #14213d !important;
-}
-
-/* 侧边栏仍保持深色设计。 */
-[data-testid="stSidebar"] {
-    color: #eef3ff !important;
-}
-
-[data-testid="stSidebar"] * {
-    color: #eef3ff;
-}
-
-[data-testid="stSidebar"] button {
-    background: rgba(255,255,255,.08) !important;
-    color: #ffffff !important;
-    border-color: rgba(255,255,255,.16) !important;
-}
-
-[data-testid="stSidebar"] button p {
-    color: #ffffff !important;
+/* 左侧导航栏维持深色，不受上面的浅色锁定影响。 */
+[data-testid="stSidebar"],[data-testid="stSidebar"] *{color:#eef3ff!important}
+[data-testid="stSidebar"] button{
+    background:rgba(255,255,255,.08)!important;
+    color:#ffffff!important;
+    border-color:rgba(255,255,255,.16)!important;
 }
 </style>
 """
+
 
 def get_premium_css(mode: str = "浅色") -> str:
     return PREMIUM_CSS + EXTRA_CSS + (DARK_CSS if mode == "深色" else LIGHT_LOCK_CSS)
