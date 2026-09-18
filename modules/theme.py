@@ -1,4 +1,4 @@
- PREMIUM_CSS = """
+PREMIUM_CSS = """
 <style>
 :root {
     --ink:#14213d; --muted:#68758f; --line:rgba(114,133,174,.18);
@@ -271,5 +271,162 @@ ADAPTIVE_CSS = """
 """
 
 
+FINAL_LIGHT_CSS = """
+<style>
+/* 比赛展示版：完全关闭主题切换入口。 */
+#MainMenu,
+[data-testid="stToolbar"],
+[data-testid="stDecoration"],
+[data-testid="stStatusWidget"]{
+    display:none!important;
+}
+header[data-testid="stHeader"]{
+    background:transparent!important;
+    height:0!important;
+    min-height:0!important;
+}
+
+/* 即使浏览器记住了Dark，也强制主页面使用浅色。 */
+:root{
+    color-scheme:light!important;
+    --text-color:#172033!important;
+    --background-color:#f5f7fb!important;
+    --secondary-background-color:#ffffff!important;
+    --primary-color:#465cff!important;
+}
+html,body,.stApp,[data-testid="stAppViewContainer"],
+[data-testid="stMain"],section.main{
+    background-color:#f5f7fb!important;
+    color:#172033!important;
+}
+.stApp{
+    background:
+      radial-gradient(circle at 78% 6%,rgba(124,77,255,.10),transparent 28%),
+      radial-gradient(circle at 28% 22%,rgba(22,184,212,.08),transparent 24%),
+      linear-gradient(180deg,#f8faff 0%,#f2f5fb 100%)!important;
+}
+
+/* 主页面文字。 */
+.stApp h1,.stApp h2,.stApp h3,.stApp h4,.stApp h5,.stApp h6,
+.stApp label,.stApp label p,.stApp .stCaption,
+.stApp [data-testid="stWidgetLabel"],
+.stApp [data-testid="stWidgetLabel"] p{
+    color:#172033!important;
+}
+
+/* 业务卡片与展开区域。 */
+.panel,.stat-card,.guide-card,.preference-box,
+[data-testid="stChatMessage"],[data-testid="stExpander"],
+[data-testid="stFileUploader"]{
+    background:#ffffff!important;
+    color:#172033!important;
+    border-color:#d7e0ef!important;
+}
+[data-testid="stExpander"] details,
+[data-testid="stExpander"] summary{
+    background:#ffffff!important;
+    color:#172033!important;
+}
+[data-testid="stExpander"] summary *,
+[data-testid="stChatMessage"] *{
+    color:#172033!important;
+}
+
+/* 普通按钮与下载按钮。 */
+.stApp div[data-testid="stButton"] button,
+.stApp div[data-testid="stDownloadButton"] button,
+.stApp button[data-testid="stBaseButton-secondary"],
+.stApp button[data-testid="stBaseButton-minimal"]{
+    background:#ffffff!important;
+    color:#172033!important;
+    border:1px solid #ccd7e8!important;
+}
+.stApp div[data-testid="stButton"] button *,
+.stApp div[data-testid="stDownloadButton"] button *,
+.stApp button[data-testid="stBaseButton-secondary"] *{
+    color:#172033!important;
+}
+
+/* 主要操作按钮。 */
+.stApp button[kind="primary"],
+.stApp button[data-testid="stBaseButton-primary"]{
+    background:linear-gradient(100deg,#315bea,#7956e8)!important;
+    color:#ffffff!important;
+    border:0!important;
+}
+.stApp button[kind="primary"] *,
+.stApp button[data-testid="stBaseButton-primary"] *{
+    color:#ffffff!important;
+}
+
+/* 输入、数字和选择控件。 */
+.stApp input,.stApp textarea,
+.stApp [data-baseweb="input"],
+.stApp [data-baseweb="base-input"],
+.stApp [data-baseweb="select"]>div{
+    background:#ffffff!important;
+    color:#172033!important;
+    border-color:#ccd7e8!important;
+}
+.stApp [data-baseweb="select"] *,
+.stApp [data-baseweb="input"] *,
+.stApp [data-testid="stNumberInput"] button,
+.stApp [data-testid="stNumberInput"] button *{
+    color:#172033!important;
+}
+.stApp [data-testid="stNumberInput"] button{
+    background:#eef2f8!important;
+    border-color:#ccd7e8!important;
+}
+.stApp input::placeholder,.stApp textarea::placeholder{
+    color:#77839a!important;
+    opacity:1!important;
+}
+
+/* 下拉弹出层与标签页。 */
+[data-baseweb="popover"],[data-baseweb="menu"],
+[role="listbox"],[role="option"]{
+    background:#ffffff!important;
+    color:#172033!important;
+}
+[role="option"] *{color:#172033!important}
+.stTabs [data-baseweb="tab-list"]{background:#e9eefa!important}
+.stTabs [data-baseweb="tab"]{color:#53617c!important}
+.stTabs [aria-selected="true"]{
+    background:#ffffff!important;
+    color:#172033!important;
+}
+
+/* 资料、下载与需求卡片。 */
+.source-item,.download-summary,.mini-badge{
+    background:#ffffff!important;
+    color:#172033!important;
+    border-color:#d7e0ef!important;
+}
+.page-title,.panel-title,.field-value,.stat-value,.guide-title,
+.download-title,.source-name{color:#172033!important}
+.page-subtitle,.field-label,.stat-label,.guide-copy,
+.download-meta,.source-meta{color:#68758f!important}
+.field-row{border-bottom-color:#e7ecf5!important}
+.requirement-progress{background:#edf1f8!important}
+
+/* 品牌横幅、课件卡片与侧栏保留设计色。 */
+.app-header,.app-header *,.slide-card,.slide-card *{color:#ffffff!important}
+.app-kicker{color:#98f1ee!important}
+[data-testid="stSidebar"]{
+    background:linear-gradient(175deg,#0c1630 0%,#152750 62%,#26327a 100%)!important;
+}
+[data-testid="stSidebar"],
+[data-testid="stSidebar"] *{color:#eef3ff!important}
+[data-testid="stSidebar"] button{
+    background:rgba(255,255,255,.08)!important;
+    color:#ffffff!important;
+    border-color:rgba(255,255,255,.16)!important;
+}
+[data-testid="stSidebar"] button *{color:#ffffff!important}
+</style>
+"""
+
+
 def get_premium_css(mode: str = "自动") -> str:
-    return PREMIUM_CSS + EXTRA_CSS + ADAPTIVE_CSS
+    return PREMIUM_CSS + EXTRA_CSS + FINAL_LIGHT_CSS
