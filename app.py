@@ -448,7 +448,7 @@ def render_step_one() -> None:
                 audio_hash = hashlib.sha256(audio_bytes).hexdigest()
                 if available and st.button("将录音转换为文字", use_container_width=True):
                     try:
-                        with st.spinner("Paraformer正在本地识别语音，首次使用需要加载模型……"):
+                        with st.spinner("Paraformer正在本地识别语音，请稍候……"):
                             st.session_state.voice_transcript = transcribe_audio(
                                 audio_bytes,
                                 getattr(recorded_audio, "name", "teacher_recording.wav"),
