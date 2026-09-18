@@ -1,0 +1,6 @@
+# 本文件在核心依赖安装完成后单独安装，仅用于本地Paraformer语音识别。
+torch>=2.2
+torchaudio>=2.2
+funasr>=1.2
+modelscope>=1.20
+soundfile>=0.12
