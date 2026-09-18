@@ -68,16 +68,23 @@ def _client() -> OpenAI:
 
 def _parse_json(content: str) -> dict[str, Any]:
     cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip(), flags=re.I)
-    try:
-        value = json.loads(cleaned)
-    except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", cleaned, flags=re.S)
-        if not match:
-            raise AIServiceError("模型返回格式异常，请再试一次。")
+    candidates = [cleaned]
+    match = re.search(r"\{.*\}", cleaned, flags=re.S)
+    if match and match.group(0) != cleaned:
+        candidates.append(match.group(0))
+
+    value = None
+    for candidate in candidates:
+        # 容忍模型偶尔产生的尾随逗号和未转义控制字符。
+        repaired = re.sub(r",\s*([}\]])", r"\1", candidate)
         try:
-            value = json.loads(match.group(0))
-        except json.JSONDecodeError as exc:
-            raise AIServiceError("模型返回格式异常，请再试一次。") from exc
+            value = json.loads(repaired, strict=False)
+            break
+        except json.JSONDecodeError:
+            continue
+
+    if value is None:
+        raise AIServiceError("模型返回格式异常")
     if not isinstance(value, dict):
         raise AIServiceError("模型没有返回有效的结构化内容。")
     return value
@@ -86,15 +93,35 @@ def _parse_json(content: str) -> dict[str, Any]:
 def _completion(messages: list[dict[str, str]], temperature: float = 0.3) -> dict[str, Any]:
     model = _setting("DEEPSEEK_MODEL", "deepseek-chat") or "deepseek-chat"
     try:
-        response = _client().chat.completions.create(
-            model=model,
-            messages=messages,
-            temperature=temperature,
-            response_format={"type": "json_object"},
-            stream=False,
-        )
-        content = response.choices[0].message.content or ""
-        return _parse_json(content)
+        client = _client()
+        last_content = ""
+        for attempt in range(2):
+            request_messages = list(messages)
+            if attempt:
+                request_messages.append(
+                    {
+                        "role": "system",
+                        "content": (
+                            "上一轮输出未通过JSON解析。请重新处理教师原话，"
+                            "只输出一个合法JSON对象；不要代码块、解释或额外文字。"
+                        ),
+                    }
+                )
+            response = client.chat.completions.create(
+                model=model,
+                messages=request_messages,
+                temperature=0 if attempt else temperature,
+                response_format={"type": "json_object"},
+                stream=False,
+            )
+            last_content = response.choices[0].message.content or ""
+            try:
+                return _parse_json(last_content)
+            except AIServiceError:
+                if attempt == 0:
+                    continue
+                raise
+        raise AIServiceError("模型暂时没有返回有效内容，请直接重新发送刚才的话。")
     except AIServiceError:
         raise
     except Exception as exc:
@@ -116,7 +143,10 @@ def interview(
 2. 已经明确的信息不要重复询问；不确定的信息保留“待确认”，不得臆造。
 3. 语言自然、简洁，像有经验的教研老师，不说空话。
 4. 需要逐步确认这些字段：__REQUIREMENT_FIELDS__。页面选项中已明确的教学顺序、PPT参数和跨学科设置不得擅自更改。
-5. 只返回合法 JSON，不要 Markdown，格式必须是：
+5. 教师可以使用任意自然语言、任意顺序回答，也可以一句话同时回答两个问题，或暂时只回答其中一个。必须从原话中提取能够确认的信息，绝不能要求教师使用编号、模板、关键词或固定格式；未回答的内容继续自然追问即可。
+6. 不得因为教师表达简短、口语化、顺序不同或答非全部问题而判定回答错误。
+7. 给教师的reply中直接确认已理解的信息，再自然追问尚缺内容，不要出现“请按格式回答”“请分别回答1和2”等提示。
+8. 只返回合法 JSON，不要 Markdown，格式必须是：
 {"reply":"给教师的回复", "requirements":{"字段":"更新后的值"}, "ready":false}
 ready 仅在课题、年级、教材版本、课时时长、学情、教学顺序和互动偏好基本明确时设为 true。
 当前确认单：__CURRENT_REQUIREMENTS__
